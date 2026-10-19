@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Posts | Minha Trajetória no Futebol{% endblock %}
+
+{% block content %}
+<h2>Posts</h2>
+
+<p><a class="button" href="{% url 'post_create' %}">Novo post</a></p>
+
+{% if post_list %}
+<ul class="post-list">
+    {% for post in post_list %}
+    <li>
+        <h3><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h3>
+        <span class="meta">Publicado em {{ post.posted_at|date:"d/m/Y H:i" }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Nenhum post publicado ainda.</p>
+{% endif %}
+{% endblock %}

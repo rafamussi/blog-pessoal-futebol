@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} | Minha Trajetória no Futebol{% endblock %}
+
+{% block content %}
+<article>
+    <h2>{{ post.title }}</h2>
+    <p class="meta">Publicado em {{ post.posted_at|date:"d/m/Y H:i" }}</p>
+
+    <div class="post-content">
+        {{ post.content|safe }}
+    </div>
+
+    <div class="actions">
+        <a class="button secondary" href="{% url 'post_list' %}">Voltar para os posts</a>
+        <a class="button" href="{% url 'post_update' post.pk %}">Editar</a>
+        <a class="button danger" href="{% url 'post_delete' post.pk %}">Remover</a>
+    </div>
+</article>
+{% endblock %}

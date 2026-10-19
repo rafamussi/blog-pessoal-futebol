@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if post %}Editar post{% else %}Novo post{% endif %} | Minha Trajetória no Futebol{% endblock %}
+
+{% block content %}
+<h2>{% if post %}Editar post{% else %}Novo post{% endif %}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Título
+        <input type="text" name="title" value="{{ post.title }}">
+    </label>
+    <label>Conteúdo (HTML)
+        <textarea name="content">{{ post.content }}</textarea>
+    </label>
+    <div class="actions">
+        <button type="submit">Salvar</button>
+        <a class="button secondary" href="{% if post %}{% url 'post_detail' post.pk %}{% else %}{% url 'post_list' %}{% endif %}">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

@@ -8,9 +8,11 @@
 </head>
 <body>
     <header class="site-header">
-        <h1>Minha Trajetória no Futebol</h1>
+        <h1><a href="{% url 'post_list' %}">Minha Trajetória no Futebol</a></h1>
         <nav class="site-nav">
             <ul>
+                <li><a href="{% url 'post_list' %}">Posts</a></li>
+                <li><a href="{% url 'post_create' %}">Novo post</a></li>
                 <li><a href="{% url 'admin:index' %}">Administração</a></li>
             </ul>
         </nav>
