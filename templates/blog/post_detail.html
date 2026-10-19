@@ -16,5 +16,21 @@
         <a class="button" href="{% url 'post_update' post.pk %}">Editar</a>
         <a class="button danger" href="{% url 'post_delete' post.pk %}">Remover</a>
     </div>
+
+    <section class="comments">
+        <h3>Comentários</h3>
+        <p><a class="button" href="{% url 'comment_create' post.pk %}">Comentar</a></p>
+
+        {% for comment in post.comment_set.all %}
+        <div class="comment">
+            <strong>{{ comment.author.get_username }}</strong>
+            <span class="meta">em {{ comment.posted_at|date:"d/m/Y H:i" }}</span>
+            <p>{{ comment.text }}</p>
+        </div>
+        {% endfor %}
+        {% if not post.comment_set.all %}
+        <p>Ainda não há comentários.</p>
+        {% endif %}
+    </section>
 </article>
 {% endblock %}
