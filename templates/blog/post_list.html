@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Posts | Minha Trajetória no Futebol{% endblock %}
+{% block title %}{% if category %}{{ category.name }}{% else %}Posts{% endif %} | Minha Trajetória no Futebol{% endblock %}
 
 {% block content %}
+{% if category %}
+<h2>Categoria: {{ category.name }}</h2>
+<p>{{ category.description }}</p>
+<p><a href="{% url 'category_list' %}">← Todas as categorias</a></p>
+{% else %}
 <h2>Posts</h2>
+{% endif %}
 
 <p><a class="button" href="{% url 'post_create' %}">Novo post</a></p>
 
@@ -17,6 +23,6 @@
     {% endfor %}
 </ul>
 {% else %}
-<p>Nenhum post publicado ainda.</p>
+<p>Nenhum post {% if category %}nesta categoria{% else %}publicado{% endif %} ainda.</p>
 {% endif %}
 {% endblock %}

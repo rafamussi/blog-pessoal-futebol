@@ -7,6 +7,14 @@
     <h2>{{ post.title }}</h2>
     <p class="meta">Publicado em {{ post.posted_at|date:"d/m/Y H:i" }}</p>
 
+    {% if post.categories.all %}
+    <ul class="category-tags">
+        {% for category in post.categories.all %}
+        <li><a href="{% url 'category_detail' category.pk %}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <div class="post-content">
         {{ post.content|safe }}
     </div>

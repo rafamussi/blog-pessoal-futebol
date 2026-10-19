@@ -10,7 +10,7 @@ from django.views.generic import (
 )
 
 from .forms import CommentForm, PostForm
-from .models import Comment, Post
+from .models import Category, Comment, Post
 
 
 class PostListView(ListView):
@@ -50,3 +50,13 @@ def comment_create(request, pk):
     else:
         form = CommentForm()
     return render(request, 'blog/comment_form.html', {'form': form, 'post': post})
+
+
+class CategoryListView(ListView):
+    model = Category
+
+
+def category_detail(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    context = {'post_list': category.post_set.all(), 'category': category}
+    return render(request, 'blog/post_list.html', context)
