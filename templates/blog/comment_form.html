@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Comentar | Minha Trajetória no Futebol{% endblock %}
+
+{% block content %}
+<h2>Comentar em “{{ post.title }}”</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="actions">
+        <button type="submit">Publicar comentário</button>
+        <a class="button secondary" href="{% url 'post_detail' post.pk %}">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

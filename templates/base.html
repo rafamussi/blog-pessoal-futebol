@@ -14,6 +14,17 @@
                 <li><a href="{% url 'post_list' %}">Posts</a></li>
                 <li><a href="{% url 'post_create' %}">Novo post</a></li>
                 <li><a href="{% url 'admin:index' %}">Administração</a></li>
+                {% if user.is_authenticated %}
+                <li>
+                    <form class="inline-form" method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        Olá, {{ user.get_username }} ·
+                        <button type="submit" class="link-button">Sair</button>
+                    </form>
+                </li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Entrar</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
