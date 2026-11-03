@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,13 +22,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
+# No Render a variável RENDER é definida automaticamente.
+ON_RENDER = 'RENDER' in os.environ
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k+szw((ap(r*k8b0=96#3wq#e)8e*6fwph@5fzrqglf0a6##n^'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', 'django-insecure-chave-apenas-para-desenvolvimento-local'
+)
+if ON_RENDER and 'SECRET_KEY' not in os.environ:
+    raise RuntimeError('Defina a variável de ambiente SECRET_KEY no Render.')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = not ON_RENDER
 
 ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = []
+RENDER_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_HOSTNAME)
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_HOSTNAME}')
+
+if ON_RENDER:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 
 # Application definition
@@ -42,6 +62,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -79,6 +100,12 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Em producao (Render), DATABASE_URL aponta para o PostgreSQL.
+if os.environ.get('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.parse(
+        os.environ['DATABASE_URL'], conn_max_age=600
+    )
 
 
 # Password validation
@@ -121,6 +148,15 @@ LOGOUT_REDIRECT_URL = 'post_list'
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+if ON_RENDER:
+    STORAGES = {
+        'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+        'staticfiles': {
+            'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+        },
+    }
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
