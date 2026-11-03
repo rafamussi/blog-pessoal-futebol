@@ -33,6 +33,18 @@ def when(year, month, day, hour=20, minute=0):
     return timezone.make_aware(datetime(year, month, day, hour, minute))
 
 
+IMAGES_URL = (
+    'https://raw.githubusercontent.com/rafamussi/blog-pessoal-futebol/main/static/images/posts/'
+)
+
+
+def figure(filename, alt, caption):
+    return (
+        f'<figure><img src="{IMAGES_URL}{filename}" alt="{alt}">'
+        f'<figcaption>{caption}</figcaption></figure>'
+    )
+
+
 POSTS = [
     {
         'title': 'Enfrentei o craque Endrick',
@@ -42,7 +54,8 @@ POSTS = [
             '<p>Na <strong>GO Cup</strong>, em Goiânia, o <strong>Playball</strong> '
             'enfrentou o <strong>Palmeiras</strong>, considerada a melhor base do país. '
             'Do outro lado estava o Endrick, hoje estrela do Real Madrid e da Seleção Brasileira.</p>'
-            '<p>Apesar da goleada por <strong>6 x 1</strong>, foi uma baita experiência jogar '
+            + figure('endrick-go-cup.jpg', 'Rafael em campo na GO Cup', 'Playball x Palmeiras, GO Cup (2016)')
+            + '<p>Apesar da goleada por <strong>6 x 1</strong>, foi uma baita experiência jogar '
             'contra jogadores que viriam a se tornar estrelas do futebol profissional. '
             'E eu fiquei feliz por ter conseguido marcar um gol na partida.</p>'
         ),
@@ -56,7 +69,8 @@ POSTS = [
             '<p>Pelo <strong>Campeonato Estadual de Futebol de Salão</strong>, o '
             '<strong>Lausanne</strong> venceu o <strong>Penha</strong> por <strong>3 x 2</strong>, '
             'e os três gols foram meus.</p>'
-            '<p>Abrimos o placar em uma jogada de lateral, mas tomamos a virada. Depois, meu amigo '
+            + figure('hat-trick-lausanne.jpg', 'Rafael com a medalha do Lausanne', 'Lausanne, Campeonato Estadual de Futebol de Salão (2018)')
+            + '<p>Abrimos o placar em uma jogada de lateral, mas tomamos a virada. Depois, meu amigo '
             'me deixou na cara do gol e eu empatei o jogo. No fim, fiz um golaço de falta, '
             'completei o hat-trick e garanti a vitória.</p>'
             '<p>Depois do jogo, meus amigos brincaram me entrevistando e perguntando qual música eu '
@@ -87,7 +101,8 @@ POSTS = [
             '<p>O <strong>Opportunity Brazil</strong> venceu o <strong>Gideão</strong> por '
             '<strong>2 x 0</strong> na final da <strong>Floripa Cup</strong>, disputada em pleno '
             'estádio da Ressacada, casa do Avaí.</p>'
-            '<p>Chovia muito forte na hora do jogo, o que deixou a partida mais truncada. Em um '
+            + figure('floripa-cup-campeao.jpg', 'Rafael com o troféu da Floripa Cup', 'Opportunity Brazil, campeão da Floripa Cup (2019)')
+            + '<p>Chovia muito forte na hora do jogo, o que deixou a partida mais truncada. Em um '
             'escanteio, marcamos o primeiro gol, e no finalzinho, em um contra-ataque, fiz o '
             'segundo para encerrar a decisão. Terminei como artilheiro do campeonato e erguendo o troféu.</p>'
             '<p>Um fato curioso: nesse time joguei ao lado do André Luiz, joia do Corinthians que '
@@ -116,7 +131,8 @@ POSTS = [
         'content': (
             '<p>No meu primeiro campeonato pela faculdade, o <strong>Poli FC</strong> chegou à final '
             'da <strong>Copa Bixo</strong> contra a forte equipe da <strong>EEFE USP</strong>.</p>'
-            '<p>Logo no início do segundo tempo, um colega de time cobrou uma falta cruzando na área e eu '
+            + figure('copa-bixo-poli-fc.jpg', 'Time do Poli FC com as medalhas', 'Poli FC, campeã da Copa Bixo (2024)')
+            + '<p>Logo no início do segundo tempo, um colega de time cobrou uma falta cruzando na área e eu '
             'fiz o gol, abrindo o placar. Estava tudo '
             'certo até que, no finalzinho, sofremos o gol de empate e a partida terminou em '
             '<strong>1 x 1</strong>, levando a decisão para os pênaltis.</p>'
@@ -145,6 +161,7 @@ POSTS = [
         ],
     },
 ]
+
 
 categories = {}
 for name, description in CATEGORIES.items():
